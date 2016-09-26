@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -69,6 +72,36 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     };
 
     /**
+     * Inflate menu
+     * @param menu
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.editor, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_save:
+                saveStock();
+                finish();
+                return true;
+            case R.id.action_delete:
+                deleteStock();
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
+    }
+
+    /**
      * Save stock entry
      */
     private void saveStock() {
@@ -77,8 +110,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         String supplierString = mSupplierAutocomplete.getText().toString().trim();
         int qtyInt = 0;
 
-        if (!TextUtils.isEmpty(mSkuEditText.getText())) {
-            Integer.parseInt(mSkuEditText.getText().toString());
+        if (!TextUtils.isEmpty(mQtyEditText.getText())) {
+            qtyInt = Integer.parseInt(mQtyEditText.getText().toString());
         }
 
         if (mStockUri == null && TextUtils.isEmpty(skuString) && TextUtils.isEmpty(nameString) && TextUtils.isEmpty(supplierString)) {
@@ -103,11 +136,27 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         } else {
             int rowsAffected = getContentResolver().update(mStockUri, values, null, null);
+            Log.e(LOG_TAG, "" + rowsAffected);
             if (rowsAffected == 1) {
                 Toast.makeText(this, "Stock updated successfully", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Error updating stock", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    /**
+     * Perform the deletion of the pet in the database.
+     */
+    private void deleteStock() {
+        if (mStockUri == null) {
+            return;
+        }
+        int r = getContentResolver().delete(mStockUri, null, null);
+        if (r == 1) {
+            Toast.makeText(this, "Deleting stock was successful", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Unable to delete stock", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -146,7 +195,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSkuEditText.setText(sku);
         mNameEditText.setText(name);
         mSupplierAutocomplete.setText(supplier);
-        mQtyEditText.setText(qty);
+        mQtyEditText.setText(Integer.toString(qty));
     }
 
     @Override

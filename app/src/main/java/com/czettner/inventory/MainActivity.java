@@ -1,6 +1,7 @@
 package com.czettner.inventory;
 
 import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -61,6 +63,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
         stockListView.setEmptyView(emptyView);
+
+        stockListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(getBaseContext(), EditorActivity.class);
+                intent.setData(ContentUris.withAppendedId(InventoryContract.StockEntry.CONTENT_URI, id));
+                startActivity(intent);
+            }
+        });
 
         // Initialise CursorLoader
         getLoaderManager().initLoader(URL_LOADER, null, this);

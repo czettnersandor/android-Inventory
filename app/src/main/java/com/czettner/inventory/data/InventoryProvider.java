@@ -109,7 +109,38 @@ public class InventoryProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+
+        switch (match) {
+            case STOCK:
+                return updateStock(uri, contentValues, selection, selectionArgs);
+            case STOCK_ID:
+                selection = InventoryContract.StockEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                int rowsUpdated = updateStock(uri, contentValues, selection, selectionArgs);
+                if (rowsUpdated != 0) {
+                    // Notify listeners about changes
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsUpdated;
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    private int updateStock(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        // Get writable database
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        // Update the pets with the given values
+        int rows = database.update(InventoryContract.StockEntry.TABLE_NAME, values, selection, selectionArgs);
+        // If the rows is -1, then the update failed. Log an error and return null.
+        if (rows == -1) {
+            Log.e(LOG_TAG, "Failed to update " + uri);
+            return 0;
+        }
+
+        return rows;
     }
 }
