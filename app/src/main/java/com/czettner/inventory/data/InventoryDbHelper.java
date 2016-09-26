@@ -21,6 +21,7 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_PETS_TABLE =  "CREATE TABLE " + StockEntry.TABLE_NAME + " ("
                 + StockEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + StockEntry.COLUMN_SKU + " TEXT NOT NULL, "
+                + StockEntry.COLUMN_SUPPLIER + " TEXT, "
                 + StockEntry.COLUMN_NAME + " TEXT);";
 
         // Execute the SQL statement
