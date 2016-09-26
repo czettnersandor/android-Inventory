@@ -16,6 +16,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".EditorActivity"></activity>
+        
+        <provider
+            android:authorities="com.czettner.inventory"
+            android:name=".data.InventoryProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

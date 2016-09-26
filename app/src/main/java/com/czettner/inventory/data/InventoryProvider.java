@@ -41,7 +41,7 @@ public class InventoryProvider extends ContentProvider {
             case STOCK:
                 cursor = database.query(InventoryContract.StockEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
-            case STOCK_ID;
+            case STOCK_ID:
                 selection = InventoryContract.StockEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri))};
                 cursor = database.query(InventoryContract.StockEntry.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
@@ -97,6 +97,8 @@ public class InventoryProvider extends ContentProvider {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
         }
+
+        Log.e(LOG_TAG, "Successfully inserted row for " + uri);
 
         return ContentUris.withAppendedId(uri, id);
     }

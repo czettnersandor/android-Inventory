@@ -4,27 +4,41 @@
     android:layout_height="@dimen/list_inner_height"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
-        android:layout_width="@dimen/list_inner_height"
+        android:layout_width="0dp"
         android:layout_height="@dimen/list_inner_height"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_weight="1"
         tools:src="@mipmap/ic_launcher" />
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="4"
         android:orientation="vertical"
         android:layout_gravity="center_vertical">
         <TextView
+            android:id="@+id/supplier_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Product Supplier"/>
         <TextView
+            android:id="@+id/sku_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="SKU123456"/>
         <TextView
+            android:id="@+id/name_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="Product Name"/>
     </LinearLayout>
+    <TextView
+        android:id="@+id/qty_text"
+        android:layout_weight="1"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textAlignment="textEnd"
+        tools:text="12"/>
 
 </LinearLayout>
