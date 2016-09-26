@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="@dimen/list_inner_height"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:layout_width="@dimen/list_inner_height"
+        android:layout_height="@dimen/list_inner_height"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        tools:src="@mipmap/ic_launcher" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Product Supplier"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="SKU123456"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Product Name"/>
+    </LinearLayout>
+
+</LinearLayout>
