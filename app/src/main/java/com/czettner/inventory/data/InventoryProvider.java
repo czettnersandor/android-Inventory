@@ -104,8 +104,28 @@ public class InventoryProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        return 0;
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int rowsUpdated;
+        switch (match) {
+            case STOCK:
+                rowsUpdated = database.delete(InventoryContract.StockEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case STOCK_ID:
+                selection = InventoryContract.StockEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                rowsUpdated = database.delete(InventoryContract.StockEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+        if (rowsUpdated != 0) {
+            // Notify listeners about changes
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
 
     @Override

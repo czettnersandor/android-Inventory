@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        // Creating the SimpleCurorAdapter with a null cursor (add it later)
+        // Ok lets experiment with something new. I'll try to use SimpleCursorAdapter
+        // Creating the SimpleCurorAdapter with a null cursor (add it later at {@link #onLoadFinished()})
         String[] columns = {
                 InventoryContract.StockEntry.COLUMN_SKU,
                 InventoryContract.StockEntry.COLUMN_NAME,
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 insertDummy();
                 return true;
             case R.id.delete_all:
+                // Delete all Stock entry, dangerous
+                getContentResolver().delete(InventoryContract.StockEntry.CONTENT_URI, null, null);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
