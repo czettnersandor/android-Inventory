@@ -33,13 +33,38 @@
             tools:text="Product Name"/>
     </LinearLayout>
     <TextView
-        android:id="@+id/qty_text"
+        android:id="@+id/price_text"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="end"
+        android:text="@string/dollar"/>
+    <TextView
         android:layout_weight="1"
         android:textAppearance="?android:textAppearanceLarge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:textAlignment="textEnd"
+        android:gravity="start"
         tools:text="12"/>
+    <TextView
+        android:id="@+id/qty_text"
+        android:layout_weight="1"
+        android:textAppearance="?android:textAppearanceLarge"
+        android:textColor="@color/colorAccent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="end"
+        tools:text="12"/>
+    <Button
+        android:id="@+id/sale_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="Sale"/>
 
 </LinearLayout>

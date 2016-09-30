@@ -56,13 +56,47 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:text="Stock information"/>
-            <EditText
-                android:id="@+id/qty_edit"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:textSize="30sp"
-                android:hint="Qty"/>
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/qty_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textSize="30sp"
+                    android:hint="Qty"/>
+                <Button
+                    android:id="@+id/sale_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sale -"
+                    android:layout_gravity="center_vertical"/>
+                <Button
+                    android:id="@+id/order_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order +"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dollar"
+                    android:textSize="30sp"/>
+                <EditText
+                    android:id="@+id/price_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:textSize="30sp"
+                    android:hint="Price"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout

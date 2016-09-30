@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">Inventory</string>
+    <string name="dollar">$</string>
+    <string name="new_stock">New Stock</string>
+    <string name="edit_stock">Edit stock</string>
+    <string name="select_picture">Select Picture</string>
+    <string name="new_stock_saved">New stock saved successfully</string>
+    <string name="error_saving_stock">Error saving new stock</string>
+    <string name="stock_updated">Stock updated successfully</string>
+    <string name="error_updating_stock">Error updating stock</string>
+    <string name="deleting_stock_successful">Deleting stock was successful</string>
+    <string name="unable_to_delete_stock">Unable to delete stock</string>
+    <string name="cursor_loading_finished">Cursor loading finished</string>
+    <string name="could_not_load_image">Could not load image</string>
+    <string name="failed_to_insert_row">"Failed to insert row for "</string>
+    <string name="successfully_inserted_row_for">"Successfully inserted row for "</string>
+    <string name="failed_to_update">"Failed to update "</string>
+    <string name="position_colon">Position:</string>
+    <string name="item_has_been_sold">" item has been sold"</string>
 </resources>

@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.czettner.inventory.R;
+
 public class InventoryProvider extends ContentProvider {
     public static final String LOG_TAG = InventoryProvider.class.getSimpleName();
 
@@ -94,11 +96,11 @@ public class InventoryProvider extends ContentProvider {
         long id = database.insert(InventoryContract.StockEntry.TABLE_NAME, null, values);
 
         if (id == -1) {
-            Log.e(LOG_TAG, "Failed to insert row for " + uri);
+            Log.e(LOG_TAG, getContext().getString(R.string.failed_to_insert_row) + uri);
             return null;
         }
 
-        Log.e(LOG_TAG, "Successfully inserted row for " + uri);
+        Log.e(LOG_TAG, getContext().getString(R.string.successfully_inserted_row_for) + uri);
 
         return ContentUris.withAppendedId(uri, id);
     }
@@ -150,6 +152,22 @@ public class InventoryProvider extends ContentProvider {
     }
 
     private int updateStock(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        String sku = values.getAsString(InventoryContract.StockEntry.COLUMN_QTY);
+        String name = values.getAsString(InventoryContract.StockEntry.COLUMN_NAME);
+        String supplier = values.getAsString(InventoryContract.StockEntry.COLUMN_SUPPLIER);
+
+        if (values.containsKey(InventoryContract.StockEntry.COLUMN_QTY) && sku == null) {
+            throw new IllegalArgumentException("A stock entry requires a valid QTY");
+        }
+
+        if (values.containsKey(InventoryContract.StockEntry.COLUMN_NAME) && name == null) {
+            throw new IllegalArgumentException("A stock entry requires a valid Name");
+        }
+
+        if (values.containsKey(InventoryContract.StockEntry.COLUMN_SUPPLIER) && supplier == null) {
+            throw new IllegalArgumentException("A stock entry requires a valid Supplier");
+        }
+
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
@@ -157,7 +175,7 @@ public class InventoryProvider extends ContentProvider {
         int rows = database.update(InventoryContract.StockEntry.TABLE_NAME, values, selection, selectionArgs);
         // If the rows is -1, then the update failed. Log an error and return null.
         if (rows == -1) {
-            Log.e(LOG_TAG, "Failed to update " + uri);
+            Log.e(LOG_TAG, getContext().getString(R.string.failed_to_update) + uri);
             return 0;
         }
 

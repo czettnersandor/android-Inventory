@@ -3,6 +3,7 @@ package com.czettner.inventory;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -11,15 +12,20 @@ import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.czettner.inventory.data.InventoryContract;
+
+import static com.czettner.inventory.EditorActivity.LOG_TAG;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int URL_LOADER = 0;
@@ -49,15 +55,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 InventoryContract.StockEntry.COLUMN_SUPPLIER,
                 InventoryContract.StockEntry.COLUMN_QTY,
                 InventoryContract.StockEntry.COLUMN_PICTURE,
+                InventoryContract.StockEntry.COLUMN_PRICE
         };
         int[] views = {
                 R.id.sku_text,
                 R.id.name_text,
                 R.id.supplier_text,
                 R.id.qty_text,
-                R.id.picture
+                R.id.picture,
+                R.id.price_text
         };
-        mAdapter = new SimpleCursorAdapter(this, R.layout.list_item, null, columns, views, 0);
+        mAdapter = new SimpleCursorAdapter(this, R.layout.list_item, null, columns, views, 0) {
+            @Override
+            public void bindView(View view, Context context, final Cursor cursor) {
+                super.bindView(view, context, cursor);
+                Button button = (Button) view.findViewById(R.id.sale_button);
+                button.setTag(cursor.getPosition());
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d(LOG_TAG, getString(R.string.position_colon) + view.getTag());
+                        sellStock(cursor, (int) view.getTag());
+                    }
+                });
+            }
+        };
 
         // Find the ListView which will be populated with the pet data
         ListView stockListView = (ListView) findViewById(R.id.list_view);
@@ -109,13 +131,32 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    /**
+     * Sell stock from item id
+     * @param cursor Cursor of the item to sell
+     */
+    private void sellStock(Cursor cursor, int position) {
+        cursor.moveToPosition(position);
+        ContentValues values = new ContentValues();
+        int idIndex = cursor.getColumnIndex(InventoryContract.StockEntry._ID);
+        int qtyIndex = cursor.getColumnIndex(InventoryContract.StockEntry.COLUMN_QTY);
+        int qty = cursor.getInt(qtyIndex);
+        int id = cursor.getInt(idIndex);
+
+        values.put(InventoryContract.StockEntry.COLUMN_QTY, --qty);
+        Uri stockUrl = ContentUris.withAppendedId(InventoryContract.StockEntry.CONTENT_URI, id);
+        int rowsAffected = getContentResolver().update(stockUrl, values, null, null);
+        Toast.makeText(this, rowsAffected + getString(R.string.item_has_been_sold), Toast.LENGTH_SHORT).show();
+    }
+
     private void insertDummy() {
         ContentValues values = new ContentValues();
         values.put(InventoryContract.StockEntry.COLUMN_SKU, "ABC1234");
         values.put(InventoryContract.StockEntry.COLUMN_NAME, "Porridge Oats");
         values.put(InventoryContract.StockEntry.COLUMN_SUPPLIER, "Quakers");
         values.put(InventoryContract.StockEntry.COLUMN_QTY, 12);
-        Uri newUri = getContentResolver().insert(InventoryContract.StockEntry.CONTENT_URI, values);
+        values.put(InventoryContract.StockEntry.COLUMN_PRICE, 5.5);
+        getContentResolver().insert(InventoryContract.StockEntry.CONTENT_URI, values);
     }
 
     @Override
@@ -131,7 +172,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         InventoryContract.StockEntry.COLUMN_NAME,
                         InventoryContract.StockEntry.COLUMN_SUPPLIER,
                         InventoryContract.StockEntry.COLUMN_QTY,
-                        InventoryContract.StockEntry.COLUMN_PICTURE
+                        InventoryContract.StockEntry.COLUMN_PICTURE,
+                        InventoryContract.StockEntry.COLUMN_PRICE
                 };
                 // Returns a new CursorLoader
                 return new CursorLoader(

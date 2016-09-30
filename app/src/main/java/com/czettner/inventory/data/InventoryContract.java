@@ -18,8 +18,6 @@ public final class InventoryContract {
       */
     public static final class StockEntry implements BaseColumns {
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_STOCK);
-        public static final String CONTENT_LIST_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STOCK;
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STOCK;
 
         // Database related constants
         public final static String TABLE_NAME = "stock";
@@ -29,5 +27,6 @@ public final class InventoryContract {
         public final static String COLUMN_NAME = "name";
         public final static String COLUMN_QTY = "qty";
         public final static String COLUMN_PICTURE = "picture";
+        public final static String COLUMN_PRICE = "price";
     }
 }
