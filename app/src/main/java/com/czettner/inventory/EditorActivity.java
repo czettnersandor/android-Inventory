@@ -3,9 +3,12 @@ package com.czettner.inventory;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,10 +19,14 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.czettner.inventory.data.InventoryContract;
+
+import java.io.IOException;
 
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -28,10 +35,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mNameEditText;
     private AutoCompleteTextView mSupplierAutocomplete;
     private EditText mQtyEditText;
+    private ImageView mPicture;
+    private Button mTakePicture;
 
     private Uri mStockUri;
+    private String mPicturePath;
     private boolean mStockHasChanged = false;
     private static final int EXISTING_STOCK_LOADER = 0;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mNameEditText = (EditText) findViewById(R.id.name_edit);
         mSupplierAutocomplete = (AutoCompleteTextView) findViewById(R.id.supplier_autocomplete);
         mQtyEditText = (EditText) findViewById(R.id.qty_edit);
+        mPicture = (ImageView) findViewById(R.id.picture);
+        mTakePicture = (Button) findViewById(R.id.take_picture);
+
+        mTakePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mStockHasChanged = true;
+                dispatchTakePictureIntent();
+            }
+        });
 
         mSkuEditText.setOnTouchListener(mTouchListener);
         mNameEditText.setOnTouchListener(mTouchListener);
@@ -99,6 +120,19 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         }
 
+    }
+
+    /**
+     * Take a picture using the camera
+     */
+    private void dispatchTakePictureIntent() {
+
+        Intent intent = new Intent();
+        // Accept only images
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_IMAGE_CAPTURE);
     }
 
     /**
@@ -167,7 +201,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 InventoryContract.StockEntry.COLUMN_NAME,
                 InventoryContract.StockEntry.COLUMN_SKU,
                 InventoryContract.StockEntry.COLUMN_QTY,
-                InventoryContract.StockEntry.COLUMN_SUPPLIER
+                InventoryContract.StockEntry.COLUMN_SUPPLIER,
+                InventoryContract.StockEntry.COLUMN_PICTURE
         };
 
         return new CursorLoader(this, mStockUri, projection, null, null, null);
@@ -204,5 +239,32 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mNameEditText.setText("");
         mSupplierAutocomplete.setText("");
         mQtyEditText.setText("");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                mPicture.setImageBitmap(bitmap);
+                mPicturePath = getRealPathFromURI(selectedImageUri);
+                Log.d(LOG_TAG, mPicturePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Could not load image", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(getApplicationContext(), contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
 }

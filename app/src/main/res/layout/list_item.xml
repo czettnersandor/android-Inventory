@@ -4,6 +4,7 @@
     android:layout_height="@dimen/list_inner_height"
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
+        android:id="@+id/picture"
         android:layout_width="0dp"
         android:layout_height="@dimen/list_inner_height"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"

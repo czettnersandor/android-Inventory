@@ -47,13 +47,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 InventoryContract.StockEntry.COLUMN_SKU,
                 InventoryContract.StockEntry.COLUMN_NAME,
                 InventoryContract.StockEntry.COLUMN_SUPPLIER,
-                InventoryContract.StockEntry.COLUMN_QTY
+                InventoryContract.StockEntry.COLUMN_QTY,
+                InventoryContract.StockEntry.COLUMN_PICTURE,
         };
         int[] views = {
                 R.id.sku_text,
                 R.id.name_text,
                 R.id.supplier_text,
-                R.id.qty_text
+                R.id.qty_text,
+                R.id.picture
         };
         mAdapter = new SimpleCursorAdapter(this, R.layout.list_item, null, columns, views, 0);
 
@@ -128,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         InventoryContract.StockEntry.COLUMN_SKU,
                         InventoryContract.StockEntry.COLUMN_NAME,
                         InventoryContract.StockEntry.COLUMN_SUPPLIER,
-                        InventoryContract.StockEntry.COLUMN_QTY
+                        InventoryContract.StockEntry.COLUMN_QTY,
+                        InventoryContract.StockEntry.COLUMN_PICTURE
                 };
                 // Returns a new CursorLoader
                 return new CursorLoader(
