@@ -143,7 +143,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int qty = cursor.getInt(qtyIndex);
         int id = cursor.getInt(idIndex);
 
-        values.put(InventoryContract.StockEntry.COLUMN_QTY, --qty);
+        if (--qty <= 0) {
+            Toast.makeText(this, "Not enough stock", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        values.put(InventoryContract.StockEntry.COLUMN_QTY, qty);
         Uri stockUrl = ContentUris.withAppendedId(InventoryContract.StockEntry.CONTENT_URI, id);
         int rowsAffected = getContentResolver().update(stockUrl, values, null, null);
         Toast.makeText(this, rowsAffected + getString(R.string.item_has_been_sold), Toast.LENGTH_SHORT).show();
