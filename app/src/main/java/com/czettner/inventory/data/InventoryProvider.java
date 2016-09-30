@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.czettner.inventory.R;
@@ -89,6 +90,10 @@ public class InventoryProvider extends ContentProvider {
 
         if (sku == null || name == null || supplier == null) {
             throw new IllegalArgumentException("A stock entry requires SKU, Name, Supplier");
+        }
+
+        if (TextUtils.isEmpty(sku) || TextUtils.isEmpty(name) || TextUtils.isEmpty(supplier)) {
+            throw new IllegalArgumentException("A stock entry requires valid SKU, Name, Supplier");
         }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();

@@ -133,8 +133,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                saveStock();
-                finish();
+                try {
+                    saveStock();
+                    finish();
+                } catch (IllegalArgumentException e) {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.action_delete:
                 deleteStock();
