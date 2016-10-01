@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/activity_editor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
 
         android:orientation="vertical"
         >
@@ -25,21 +25,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:text="Product details"/>
+                android:text="@string/product_details"/>
             <EditText
                 android:id="@+id/sku_edit"
-                android:hint="SKU"
+                android:hint="@string/sku"
                 style="@style/head_edittext"
                 android:theme="@style/OrangeEditTheme"/>
             <EditText
                 android:id="@+id/name_edit"
-                android:hint="Product name"
+                android:hint="@string/product_name"
                 style="@style/head_edittext"
                 android:theme="@style/OrangeEditTheme"/>
             <AutoCompleteTextView
                 android:id="@+id/supplier_autocomplete"
                 style="@style/head_edittext"
-                android:hint="Supplier"
+                android:hint="@string/supplier"
                 android:theme="@style/OrangeEditTheme"/>
         </LinearLayout>
 
@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:text="Stock information"/>
+                android:text="@string/stock_information"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,24 +66,24 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:textSize="30sp"
-                    android:hint="Qty"/>
+                    android:hint="@string/qty"/>
                 <Button
                     android:id="@+id/sale_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sale -"
+                    android:text="@string/sale_minus"
                     android:layout_gravity="center_vertical"/>
                 <Button
                     android:id="@+id/order_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Order +"
+                    android:text="@string/order_plus"
                     android:layout_gravity="center_vertical"/>
                 <Button
                     android:id="@+id/order_more_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Order more"
+                    android:text="@string/order_more"
                     android:layout_gravity="center_vertical"/>
             </LinearLayout>
             <LinearLayout
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="numberDecimal"
                     android:textSize="30sp"
-                    android:hint="Price"/>
+                    android:hint="@string/price"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -122,7 +122,7 @@
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Take picture"/>
+                android:text="@string/take_picture"/>
         </LinearLayout>
 
     </LinearLayout>

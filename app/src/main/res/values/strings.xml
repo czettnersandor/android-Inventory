@@ -19,4 +19,17 @@
     <string name="item_has_been_sold">" item has been sold"</string>
     <string name="delete_stock">Delete stock</string>
     <string name="do_you_really_want_to_delete">Do you really want to delete?</string>
+    <string name="take_picture">Take picture</string>
+    <string name="price">Price</string>
+    <string name="order_more">Order more</string>
+    <string name="order_plus">Order +</string>
+    <string name="sale_minus">Sale -</string>
+    <string name="qty">Qty</string>
+    <string name="stock_information">Stock information</string>
+    <string name="supplier">Supplier</string>
+    <string name="product_name">Product name</string>
+    <string name="sku">SKU</string>
+    <string name="product_details">Product details</string>
+    <string name="the_store_is_empty_right_now">The store is empty right now</string>
+    <string name="get_started_by_adding_new_stock">Get started by adding new stock</string>
 </resources>

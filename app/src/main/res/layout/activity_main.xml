@@ -36,7 +36,7 @@
             android:layout_below="@+id/store_icon"
             android:paddingTop="8dp"
             android:textAppearance="?android:textAppearanceMedium"
-            android:text="The store is empty right now"/>
+            android:text="@string/the_store_is_empty_right_now"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             android:layout_below="@+id/empty_text"
             android:paddingTop="8dp"
             android:textAppearance="?android:textAppearanceSmall"
-            android:text="Get started by adding new stock"/>
+            android:text="@string/get_started_by_adding_new_stock"/>
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_truck_delivery_white_24dp"/>
 
