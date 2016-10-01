@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         int qty = cursor.getInt(qtyIndex);
         int id = cursor.getInt(idIndex);
 
-        if (--qty <= 0) {
+        if (--qty <= -1) {
             Toast.makeText(this, "Not enough stock", Toast.LENGTH_SHORT).show();
             return;
         }

@@ -1,8 +1,10 @@
 package com.czettner.inventory;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -141,8 +143,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 }
                 return true;
             case R.id.action_delete:
-                deleteStock();
-                finish();
+                new AlertDialog.Builder(this)
+                        .setTitle("Delete stock")
+                        .setMessage("Do you really want to delete?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                deleteStock();
+                                finish();
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
