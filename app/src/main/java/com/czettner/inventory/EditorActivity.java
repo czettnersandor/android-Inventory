@@ -144,8 +144,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 return true;
             case R.id.action_delete:
                 new AlertDialog.Builder(this)
-                        .setTitle("Delete stock")
-                        .setMessage("Do you really want to delete?")
+                        .setTitle(R.string.delete_stock)
+                        .setMessage(R.string.do_you_really_want_to_delete)
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 

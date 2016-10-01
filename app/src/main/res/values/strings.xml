@@ -17,4 +17,6 @@
     <string name="failed_to_update">"Failed to update "</string>
     <string name="position_colon">Position:</string>
     <string name="item_has_been_sold">" item has been sold"</string>
+    <string name="delete_stock">Delete stock</string>
+    <string name="do_you_really_want_to_delete">Do you really want to delete?</string>
 </resources>
