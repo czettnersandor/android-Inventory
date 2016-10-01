@@ -1,10 +1,12 @@
 package com.czettner.inventory;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -121,8 +123,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 insertDummy();
                 return true;
             case R.id.delete_all:
-                // Delete all Stock entry, dangerous
-                getContentResolver().delete(InventoryContract.StockEntry.CONTENT_URI, null, null);
+                // Confirmation dialog for delete all
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.delete_stock)
+                        .setMessage(R.string.do_you_really_want_to_delete)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // Delete all Stock entry, dangerous
+                                getContentResolver().delete(InventoryContract.StockEntry.CONTENT_URI, null, null);
+                            }})
+                        .setNegativeButton(android.R.string.no, null).show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

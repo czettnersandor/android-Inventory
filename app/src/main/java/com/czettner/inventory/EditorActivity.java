@@ -43,6 +43,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mPriceEditText;
     private Button mSaleButton;
     private Button mOrderButton;
+    private Button mOrderMoreButton;
 
     private Uri mStockUri;
     private String mPicturePath;
@@ -55,17 +56,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
-        mStockUri = getIntent().getData();
-        if (mStockUri == null) {
-            setTitle(getString(R.string.new_stock));
-            // Invalidate the options menu, so the "Delete" menu option can be hidden.
-            // (It doesn't make sense to delete a pet that hasn't been created yet.)
-            invalidateOptionsMenu();
-        } else {
-            getLoaderManager().initLoader(EXISTING_STOCK_LOADER, null, this);
-            setTitle(getString(R.string.edit_stock));
-        }
-
         mSkuEditText = (EditText) findViewById(R.id.sku_edit);
         mNameEditText = (EditText) findViewById(R.id.name_edit);
         mSupplierAutocomplete = (AutoCompleteTextView) findViewById(R.id.supplier_autocomplete);
@@ -75,6 +65,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mTakePicture = (Button) findViewById(R.id.take_picture);
         mSaleButton = (Button) findViewById(R.id.sale_button);
         mOrderButton = (Button) findViewById(R.id.order_button);
+        mOrderMoreButton = (Button) findViewById(R.id.order_more_button);
+
+        mStockUri = getIntent().getData();
+        if (mStockUri == null) {
+            setTitle(getString(R.string.new_stock));
+            // Invalidate the options menu, so the "Delete" menu option can be hidden.
+            // (It doesn't make sense to delete a pet that hasn't been created yet.)
+            invalidateOptionsMenu();
+            // Hide the order more button as it's a stock entry. The user should be able to order
+            // more of an existing item.
+            mOrderMoreButton.setVisibility(View.GONE);
+        } else {
+            getLoaderManager().initLoader(EXISTING_STOCK_LOADER, null, this);
+            setTitle(getString(R.string.edit_stock));
+        }
 
         mTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +93,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
                 mStockHasChanged = true;
-                int qty = Integer.parseInt(mQtyEditText.getText().toString());
+                int qty;
+                String qtyString = mQtyEditText.getText().toString();
+                if (TextUtils.isEmpty(qtyString)) {
+                    qty = 0;
+                } else {
+                    qty = Integer.parseInt(mQtyEditText.getText().toString());
+                }
                 mQtyEditText.setText("" + ++qty);
             }
         });
@@ -97,8 +108,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(View view) {
                 mStockHasChanged = true;
-                int qty = Integer.parseInt(mQtyEditText.getText().toString());
+                int qty;
+                String qtyString = mQtyEditText.getText().toString();
+                if (TextUtils.isEmpty(qtyString)) {
+                    qty = 0;
+                } else {
+                    qty = Integer.parseInt(mQtyEditText.getText().toString());
+                }
+                if (qty <= 0) {
+                    return;
+                }
                 mQtyEditText.setText("" + --qty);
+            }
+        });
+
+        mOrderMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                orderMoreEmail();
             }
         });
 
@@ -118,6 +145,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return false;
         }
     };
+
+    /**
+     * Send intent to order more stock from the provider
+     */
+    private void orderMoreEmail() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto","salesteam@example.com", null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Order more " + mSkuEditText.getText());
+        String body = "Please send us more of the below product\n";
+        body += "SKU: " + mSkuEditText.getText() + "\n";
+        body += "Product name: " + mNameEditText.getText() + "\n";
+        body += "Quantity: "; // User should fill in this
+        emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+        startActivity(Intent.createChooser(emailIntent, "Send email..."));
+    }
 
     /**
      * Inflate menu
@@ -171,8 +213,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Accept only images
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        try {
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), REQUEST_IMAGE_CAPTURE);
+        } catch (Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), REQUEST_IMAGE_CAPTURE);
     }
 
     /**

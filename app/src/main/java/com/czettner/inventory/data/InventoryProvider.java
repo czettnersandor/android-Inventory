@@ -13,6 +13,8 @@ import android.util.Log;
 
 import com.czettner.inventory.R;
 
+import org.w3c.dom.Text;
+
 public class InventoryProvider extends ContentProvider {
     public static final String LOG_TAG = InventoryProvider.class.getSimpleName();
 
@@ -87,13 +89,20 @@ public class InventoryProvider extends ContentProvider {
         String sku = values.getAsString(InventoryContract.StockEntry.COLUMN_SKU);
         String name = values.getAsString(InventoryContract.StockEntry.COLUMN_NAME);
         String supplier = values.getAsString(InventoryContract.StockEntry.COLUMN_SUPPLIER);
+        String picture = values.getAsString(InventoryContract.StockEntry.COLUMN_PICTURE);
+        int qty = values.getAsInteger(InventoryContract.StockEntry.COLUMN_QTY);
 
-        if (sku == null || name == null || supplier == null) {
+
+        if (sku == null || name == null || supplier == null || picture == null) {
             throw new IllegalArgumentException("A stock entry requires SKU, Name, Supplier");
         }
 
-        if (TextUtils.isEmpty(sku) || TextUtils.isEmpty(name) || TextUtils.isEmpty(supplier)) {
-            throw new IllegalArgumentException("A stock entry requires valid SKU, Name, Supplier");
+        if (TextUtils.isEmpty(sku)
+                || TextUtils.isEmpty(name)
+                || TextUtils.isEmpty(supplier)
+                || TextUtils.isEmpty(picture)
+                || qty == 0) {
+            throw new IllegalArgumentException("A stock entry requires valid SKU, Name, Supplier, Picture, Qty");
         }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
