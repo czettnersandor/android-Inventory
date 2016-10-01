@@ -93,16 +93,15 @@ public class InventoryProvider extends ContentProvider {
         int qty = values.getAsInteger(InventoryContract.StockEntry.COLUMN_QTY);
 
 
-        if (sku == null || name == null || supplier == null || picture == null) {
+        if (sku == null || name == null || supplier == null) {
             throw new IllegalArgumentException("A stock entry requires SKU, Name, Supplier");
         }
 
         if (TextUtils.isEmpty(sku)
                 || TextUtils.isEmpty(name)
                 || TextUtils.isEmpty(supplier)
-                || TextUtils.isEmpty(picture)
                 || qty == 0) {
-            throw new IllegalArgumentException("A stock entry requires valid SKU, Name, Supplier, Picture, Qty");
+            throw new IllegalArgumentException("A stock entry requires valid SKU, Name, Supplier, Qty");
         }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();

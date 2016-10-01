@@ -346,7 +346,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                 mPicture.setImageBitmap(bitmap);
                 mPicturePath = getRealPathFromURI(selectedImageUri);
-                Log.d(LOG_TAG, mPicturePath);
+                // Log.d(LOG_TAG, mPicturePath);
             } catch (IOException e) {
                 e.printStackTrace();
                 Toast.makeText(this, R.string.could_not_load_image, Toast.LENGTH_SHORT).show();
