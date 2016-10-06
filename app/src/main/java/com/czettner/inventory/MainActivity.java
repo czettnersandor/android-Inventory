@@ -1,5 +1,6 @@
 package com.czettner.inventory;
 
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
@@ -12,6 +13,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -95,8 +97,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(getBaseContext(), EditorActivity.class);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(MainActivity.this, view, "stock_image");
                 intent.setData(ContentUris.withAppendedId(InventoryContract.StockEntry.CONTENT_URI, id));
-                startActivity(intent);
+                startActivity(intent, options.toBundle());
             }
         });
 

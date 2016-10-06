@@ -116,7 +116,8 @@
             <ImageView
                 android:id="@+id/picture"
                 android:layout_width="128dp"
-                android:layout_height="128dp" />
+                android:layout_height="128dp"
+                android:transitionName="stock_image"/>
             <Button
                 android:id="@+id/take_picture"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"

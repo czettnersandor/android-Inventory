@@ -27,7 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_store_black_48dp"/>
+            android:src="@drawable/ic_store_black_48dp"
+            android:transitionName="stock_image"/>
         <TextView
             android:id="@+id/empty_text"
             android:layout_width="wrap_content"
